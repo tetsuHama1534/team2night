@@ -24,52 +24,34 @@
     html,body{height:100%;scroll-behavior:smooth}
     body{margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text);line-height:1.6}
 
-    /* ===== ページ全体を 1画面ごとにスナップ ===== */
+    /* ===== 1画面ごとにスナップ ===== */
     main{
-      height:100svh;                /* 表示高にフィット */
-      overflow-y:auto;              /* main自体をスクロール領域に */
-      scroll-snap-type:y mandatory; /* 縦にパチッと止める */
+      height:100svh;
+      overflow-y:auto;
+      scroll-snap-type:y mandatory;
       -webkit-overflow-scrolling:touch;
     }
     section.page{
       scroll-snap-align:start;
-      min-height:100svh;            /* 1ページ＝1画面 */
+      min-height:100svh;
       display:flex;
       align-items:stretch;
     }
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:16px; width:100%}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:16px;width:100%}
 
-    /* ===== HERO（1ページ目） ===== */
+    /* ===== 1ページ目：背景ヒーローのみ ===== */
     .hero{
-      position:relative;
-      border-radius:0;              /* 全画面なので角丸なし */
-      overflow:hidden;
-      width:100%;
+      position:relative; overflow:hidden; width:100%;
     }
     .hero::before{
-      content:"";
-      position:absolute; inset:0;
+      content:""; position:absolute; inset:0;
       background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
       filter:contrast(1.05) saturate(1.05);
     }
     .hero::after{
-      content:"";
-      position:absolute; inset:0;
+      content:""; position:absolute; inset:0;
       background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.55));
     }
-    .hero-inner{
-      position:relative; z-index:1;
-      display:flex; flex-direction:column;
-      justify-content:flex-end;
-      height:100%; padding:24px 16px 84px; /* 下に “次へ” ボタンの余白 */
-    }
-    .eyebrow{display:inline-block;background:rgba(255,255,255,.9);color:#0f172a;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;letter-spacing:.02em;margin-bottom:10px}
-    .title{font-size:clamp(22px,5.2vw,30px);font-weight:800;color:#fff;margin:0 0 6px}
-    .lead{color:#e5e7eb;margin:0 0 14px;font-size:15px}
-    .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;border:none;border-radius:14px;padding:12px 18px;font-weight:700;box-shadow:0 6px 14px rgba(2,132,199,.35);transition:.15s transform ease,.15s background ease}
-    .cta:active{transform:translateY(1px)}
-    .cta:focus-visible{outline:3px solid rgba(2,132,199,.45);outline-offset:2px}
-    .cta:hover{background:var(--brand-dark)}
 
     /* 画面下の “次へ” 固定ボタン */
     .pager-next{
@@ -83,13 +65,22 @@
       cursor:pointer;
     }
 
-    /* ===== 2ページ目（登録・メンバー） ===== */
-    .content{
-      width:100%;
-      display:flex; align-items:flex-start;
-    }
+    /* ===== 2ページ目：上部にコピー＋CTA ===== */
+    .content{width:100%; display:flex; align-items:flex-start}
+    .hero-text{margin-top:8px; margin-bottom:10px}
+    .hero-text .title{color:var(--text)}     /* ← 明るい背景用に黒系に */
+    .hero-text .lead{color:var(--sub)}       /* ← サブテキストは薄め */
+    .eyebrow{display:inline-block;background:rgba(255,255,255,.9);color:#0f172a;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;letter-spacing:.02em;margin-bottom:10px}
+    .title{font-size:clamp(22px,5.2vw,30px);font-weight:800;margin:0 0 6px}
+    .lead{margin:0 0 14px;font-size:15px}
+    .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;border:none;border-radius:14px;padding:12px 18px;font-weight:700;box-shadow:0 6px 14px rgba(2,132,199,.35);transition:.15s transform ease,.15s background ease}
+    .cta:active{transform:translateY(1px)}
+    .cta:focus-visible{outline:3px solid rgba(2,132,199,.45);outline-offset:2px}
+    .cta:hover{background:var(--brand-dark)}
+
     .strip{margin-top:14px;background:var(--card);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
     .strip p{margin:0;color:var(--sub);font-size:14px}
+
     .section{margin-top:22px}
     .section h2{font-size:18px;margin:0 0 12px}
     .cards{display:grid;gap:12px}
@@ -98,13 +89,10 @@
     .name{font-weight:700}
     .role{font-size:12px;color:var(--sub);margin-top:2px}
 
-    /* 画面幅が広いときの体裁微調整 */
     @media (min-width:480px){
       .lead{font-size:16px}
       .cards{grid-template-columns:repeat(3,1fr)}
     }
-
-    /* 動きが苦手な方向け：スナップ無効＆スムース無効 */
     @media (prefers-reduced-motion: reduce){
       html,body{scroll-behavior:auto}
       main{scroll-snap-type:none}
@@ -113,28 +101,31 @@
 </head>
 <body>
   <main>
-    <!-- ===== 1ページ目：ヒーロー ===== -->
+    <!-- ===== 1ページ目：背景ヒーローのみ ===== -->
     <section class="page">
       <div class="hero" aria-label="ヒーロー">
-        <div class="hero-inner wrap">
-          <span class="eyebrow">旅の入口</span>
-          <h1 class="title">地元の“いいね”を、手のひらに。</h1>
-          <p class="lead">アプリ版に入る前に、人気スポットや旬のイベントをチラ見せ。気になったら、登録してフル体験！</p>
-          <a class="cta" href="#register">登録する</a>
-        </div>
-        <!-- 次のページへ -->
         <button class="pager-next" id="goNext" aria-label="次のページへ">▼ 次へ</button>
       </div>
     </section>
 
-    <!-- ===== 2ページ目：登録案内＋メンバー ===== -->
+    <!-- ===== 2ページ目：コピー＋CTA → 登録案内 → メンバー ===== -->
     <section class="page">
       <div class="wrap content">
         <div style="width:100%">
+          <!-- ★ヒーローから移動したテキスト群（明るい背景用に配色調整） -->
+          <div class="hero-text">
+            <span class="eyebrow">旅の入口</span>
+            <h1 class="title">地元の“いいね”を、手のひらに。</h1>
+            <p class="lead">アプリ版に入る前に、人気スポットや旬のイベントをチラ見せ。気になったら、登録してフル体験！</p>
+            <a class="cta" href="#register">登録する</a>
+          </div>
+
+          <!-- 登録ストリップ -->
           <section id="register" class="strip" aria-label="登録案内">
             <p>※ 登録は無料。メールアドレスだけでOK。後からいつでも解除できます。</p>
           </section>
 
+          <!-- メンバー一覧 -->
           <section class="section" aria-labelledby="team-title">
             <h2 id="team-title">サイト作成メンバー</h2>
             <div class="cards">
@@ -185,19 +176,14 @@
       }
     });
 
-    // ページ内リンク（登録ボタン）も2ページ目へ滑らか遷移
+    // 「登録する」クリック時も2ページ目の登録案内へ
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const id = a.getAttribute('href').slice(1);
         const el = document.getElementById(id);
         if(el){
           e.preventDefault();
-          // 2ページ目の開始位置へ
-          const main = document.querySelector('main');
-          const p2 = document.querySelectorAll('section.page')[1];
-          main.scrollTo({ top: p2.offsetTop, behavior: 'smooth' });
-          // 少し待ってから対象要素へフォーカス
-          setTimeout(()=> el.scrollIntoView({ behavior:'smooth', block:'start' }), 350);
+          el.scrollIntoView({ behavior:'smooth', block:'start' });
         }
       });
     });
