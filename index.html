@@ -21,139 +21,201 @@
       --maxw:680px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text);line-height:1.6}
+    html,body{height:100%;margin:0}
+    body{
+      font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg); color:var(--text); line-height:1.6;
+    }
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    /* Hero */
-    .hero{position:relative;border-radius:calc(var(--radius) + 6px);overflow:hidden;min-height:46vh;background:#ccc;box-shadow:var(--shadow)}
-    .hero::before{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;filter:contrast(1.05) saturate(1.05)}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.55))}
-    .hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;padding:22px}
-    .eyebrow{display:inline-block;background:rgba(255,255,255,.9);color:#0f172a;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;letter-spacing:.02em;margin-bottom:10px}
-    .title{font-size: clamp(22px, 5.2vw, 30px);font-weight:800;color:#fff;margin:0 0 6px}
-    .lead{color:#e5e7eb;margin:0 0 14px;font-size:15px}
-    .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;border:none;border-radius:14px;padding:12px 18px;font-weight:700;box-shadow:0 6px 14px rgba(2,132,199,.35);transition:.15s transform ease,.15s background ease}
-    .cta:active{transform:translateY(1px)}
-    .cta:focus-visible{outline:3px solid rgba(2,132,199,.45);outline-offset:2px}
+    /* ===== 1画面ごとにスナップする縦スクロール領域 ===== */
+    main{
+      height:100svh;               /* スマホのUI高に強い */
+      overflow-y:auto;
+      scroll-snap-type:y mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    section.page{
+      scroll-snap-align:start;
+      min-height:100svh;           /* 1ページ＝1画面 */
+      display:flex; align-items:stretch;
+    }
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:16px; width:100%}
+
+    /* ===== 1ページ目：背景ヒーローのみ ===== */
+    .hero{position:relative; width:100%; overflow:hidden; border-radius:0; box-shadow:none}
+    .hero::before{
+      content:""; position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      filter:contrast(1.05) saturate(1.05);
+    }
+    .hero::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.55));
+    }
+    /* 画面下中央の “次へ” ボタン */
+    .pager-next{
+      position:absolute; left:50%; bottom:20px; transform:translateX(-50%);
+      z-index:2; background:var(--card); border:none; border-radius:999px;
+      box-shadow:var(--shadow); padding:10px 14px; font-weight:700;
+      display:flex; align-items:center; gap:6px; cursor:pointer;
+    }
+
+    /* ===== 2ページ目：上部にコピー＋CTA、その下に登録案内とメンバー ===== */
+    .hero-text{margin-top:8px; margin-bottom:10px}
+    .eyebrow{
+      display:inline-block; background:rgba(255,255,255,.9); color:#0f172a;
+      border-radius:999px; padding:6px 10px; font-size:12px; font-weight:700; letter-spacing:.02em; margin-bottom:10px
+    }
+    .title{font-size:clamp(22px,5.2vw,30px); font-weight:800; margin:0 0 6px; color:var(--text)}
+    .lead{margin:0 0 14px; font-size:15px; color:var(--sub)}
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      background:var(--brand); color:#fff; border:none; border-radius:14px;
+      padding:12px 18px; font-weight:700;
+      box-shadow:0 6px 14px rgba(2,132,199,.35);
+      transition:.15s transform ease,.15s background ease;
+    }
     .cta:hover{background:var(--brand-dark)}
+    .cta:active{transform:translateY(1px)}
+    .cta:focus-visible{outline:3px solid rgba(2,132,199,.45); outline-offset:2px}
 
     /* Register strip */
-    .strip{margin-top:14px;background:var(--card);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
-    .strip p{margin:0;color:var(--sub);font-size:14px}
+    .strip{margin-top:14px; background:var(--card); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow)}
+    .strip p{margin:0; color:var(--sub); font-size:14px}
 
-    /* Team section */
+    /* Team */
     .section{margin-top:22px}
-    .section h2{font-size:18px;margin:0 0 12px}
-    .cards{display:grid;gap:12px}
-    .card{background:var(--card);border-radius:var(--radius);padding:16px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
-    .avatar{width:42px;height:42px;border-radius:50%;background:#e5e7eb;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;color:#64748b}
+    .section h2{font-size:18px; margin:0 0 12px}
+    .cards{display:grid; gap:12px}
+    .card{
+      background:var(--card); border-radius:var(--radius); padding:16px 14px; box-shadow:var(--shadow);
+      display:flex; align-items:center; gap:12px
+    }
+    .avatar{width:42px; height:42px; border-radius:50%; background:#e5e7eb; flex:none; display:flex; align-items:center; justify-content:center; font-weight:700; color:#64748b}
     .name{font-weight:700}
-    .role{font-size:12px;color:var(--sub);margin-top:2px}
+    .role{font-size:12px; color:var(--sub); margin-top:2px}
 
-    /* Footer spacing */
-    .footspace{height:80px}
+    /* Back-to-top（main内スクロールに対応） */
+    .toTop{
+      position:fixed; right:16px; bottom:16px; width:52px; height:52px; border-radius:999px; border:none;
+      background:var(--card); box-shadow:var(--shadow); display:grid; place-items:center; font-size:22px; cursor:pointer;
+      transition:transform .15s ease,opacity .15s ease
+    }
+    .toTop[hidden]{opacity:0; pointer-events:none; transform:translateY(8px)}
+    .toTop:focus-visible{outline:3px solid rgba(2,132,199,.45); outline-offset:3px}
 
-    /* Back-to-top button */
-    .toTop{position:fixed;right:16px;bottom:16px;width:52px;height:52px;border-radius:999px;border:none;background:var(--card);box-shadow:var(--shadow);display:grid;place-items:center;font-size:22px;cursor:pointer;transition:transform .15s ease,opacity .15s ease}
-    .toTop[hidden]{opacity:0;pointer-events:none;transform:translateY(8px)}
-    .toTop:focus-visible{outline:3px solid rgba(2,132,199,.45);outline-offset:3px}
-
-    /* Larger phones / small tablets */
+    /* 幅広でカードを3列に */
     @media (min-width:480px){
-      .hero{min-height:52vh}
       .lead{font-size:16px}
       .cards{grid-template-columns:repeat(3,1fr)}
+    }
+    /* 動きが苦手な方向け：スナップ無効 */
+    @media (prefers-reduced-motion: reduce){
+      main{scroll-snap-type:none}
+      html,body{scroll-behavior:auto}
     }
   </style>
 </head>
 <body>
-  <a id="top" tabindex="-1"></a>
-  <main class="wrap">
-    <!-- HERO -->
-    <section class="hero" aria-label="ヒーロー">
-      <div class="hero-inner">
-        <span class="eyebrow">旅の入口</span>
-        <h1 class="title">地元の“いいね”を、手のひらに。</h1>
-        <p class="lead">アプリ版に入る前に、人気スポットや旬のイベントをチラ見せ。気になったら、登録してフル体験！</p>
-        <a class="cta" href="#register" aria-label="登録セクションへ移動">登録する</a>
+  <main>
+    <!-- ===== 1ページ目：ヒーロー（背景のみ） ===== -->
+    <section class="page" aria-label="ヒーロー">
+      <div class="hero">
+        <button class="pager-next" id="goNext" aria-label="次のページへ">▼ 次へ</button>
       </div>
     </section>
 
-    <!-- Register strip (説明や注意書きを置く細長いボックス) -->
-    <section id="register" class="strip" aria-label="登録案内">
-      <p>※ 登録は無料。メールアドレスだけでOK。後からいつでも解除できます。</p>
-    </section>
+    <!-- ===== 2ページ目：コピー＋CTA → 登録案内 → メンバー ===== -->
+    <section class="page" aria-label="コンテンツ">
+      <div class="wrap">
+        <!-- ★ ヒーローから移動したテキスト（2ページ目の一番上） -->
+        <div class="hero-text">
+          <span class="eyebrow">旅の入口</span>
+          <h1 class="title">地元の“いいね”を、手のひらに。</h1>
+          <p class="lead">アプリ版に入る前に、人気スポットや旬のイベントをチラ見せ。気になったら、登録してフル体験！</p>
+          <a class="cta" href="#register">登録する</a>
+        </div>
 
-    <!-- Team -->
-    <section class="section" aria-labelledby="team-title">
-      <h2 id="team-title">サイト作成メンバー</h2>
-      <div class="cards">
-        <!-- ★メンバー3名の名前に置き換えてください -->
-        <article class="card" aria-label="メンバー1">
-          <div class="avatar" aria-hidden="true">A</div>
-          <div>
-            <div class="name">たま</div>
-            <div class="role">趣味は、efootball。欧州サッカーが好きです。</div>
+        <!-- Register strip -->
+        <section id="register" class="strip" aria-label="登録案内">
+          <p>※ 登録は無料。メールアドレスだけでOK。後からいつでも解除できます。</p>
+        </section>
+
+        <!-- Team -->
+        <section class="section" aria-labelledby="team-title">
+          <h2 id="team-title">サイト作成メンバー</h2>
+          <div class="cards">
+            <article class="card" aria-label="メンバー1">
+              <div class="avatar" aria-hidden="true">A</div>
+              <div>
+                <div class="name">たま</div>
+                <div class="role">趣味は、efootball。欧州サッカーが好きです。</div>
+              </div>
+            </article>
+            <article class="card" aria-label="メンバー2">
+              <div class="avatar" aria-hidden="true">B</div>
+              <div>
+                <div class="name">デルマジロ</div>
+                <div class="role">プログラミング初心者<br>皮膚にちょっとだけ詳しい人</div>
+              </div>
+            </article>
+            <article class="card" aria-label="メンバー3">
+              <div class="avatar" aria-hidden="true">C</div>
+              <div>
+                <div class="name">田舎の人</div>
+                <div class="role">地方公務員（したっぱ）</div>
+              </div>
+            </article>
+            <article class="card" aria-label="メンバー4">
+              <div class="avatar" aria-hidden="true">D</div>
+              <div>
+                <div class="name">メンバー名４</div>
+                <div class="role">Engineer</div>
+              </div>
+            </article>
           </div>
-        </article>
-        <article class="card" aria-label="メンバー2">
-          <div class="avatar" aria-hidden="true">B</div>
-          <div>
-            <div class="name">デルマジロ</div>
-            <div class="role">プログラミング初心者
-              皮膚にちょっとだけ詳しい人</div>
-          </div>
-        </article>
-        <article class="card" aria-label="メンバー3">
-          <div class="avatar" aria-hidden="true">C</div>
-          <div>
-            <div class="name">田舎の人</div>
-            <div class="role">地方公務員（したっぱ）</div>
-          </div>
-        </article>
-    <article class="card" aria-label="メンバー4">
-      <div class="avatar" aria-hidden="true">D</div>
-      <div>
-        <div class="name">メンバー名４</div>
-        <div class="role">Engineer</div>
-      </div>
-    </article>
+        </section>
+
+        <div style="height:40px" aria-hidden="true"></div>
+
       </div>
     </section>
-
-    <div class="footspace" aria-hidden="true"></div>
   </main>
 
-  <!-- Back to top button -->
-  <button class="toTop" id="toTop" aria-label="上に戻る" hidden>
-    ↑
-  </button>
+  <!-- Back to top -->
+  <button class="toTop" id="toTop" aria-label="上に戻る" hidden>↑</button>
 
   <script>
-    // スムーズスクロール（iOS/Androidともに自然な動き）
-    function smoothTo(y){
-      window.scrollTo({top:y,behavior:'smooth'});
+    // 「▼ 次へ」で 2ページ目へ
+    document.getElementById('goNext')?.addEventListener('click', () => {
+      const main = document.querySelector('main');
+      const pages = document.querySelectorAll('section.page');
+      if (pages[1]) main.scrollTo({ top: pages[1].offsetTop, behavior: 'smooth' });
+    });
+
+    // main内スクロールに合わせて「上に戻る」を制御
+    const mainEl = document.querySelector('main');
+    const toTop = document.getElementById('toTop');
+    const showAfter = 80; // px
+    function onMainScroll(){
+      if (mainEl.scrollTop > showAfter) { toTop.hidden = false; }
+      else { toTop.hidden = true; }
     }
+    mainEl.addEventListener('scroll', onMainScroll, { passive:true });
+    toTop.addEventListener('click', () => mainEl.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // 上に戻るボタンの表示/非表示
-    const btn = document.getElementById('toTop');
-    const showAfter = 120; // px
-    const onScroll = () => {
-      if(window.scrollY > showAfter){ btn.hidden = false; } else { btn.hidden = true; }
-    };
-    window.addEventListener('scroll', onScroll, {passive:true});
-
-    // クリックでトップへ
-    btn.addEventListener('click', () => smoothTo(0));
-
-    // ページ内リンクのスムーズ遷移
+    // 2ページ目内の #register へ自然にスクロール（main内移動）
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const id = a.getAttribute('href').slice(1);
         const el = document.getElementById(id);
-        if(el){ e.preventDefault(); smoothTo(el.getBoundingClientRect().top + window.scrollY - 8); }
+        if(!el) return;
+        e.preventDefault();
+        // 2ページ目の先頭へ移動 → その後登録枠へ
+        const p2 = document.querySelectorAll('section.page')[1];
+        mainEl.scrollTo({ top: p2.offsetTop, behavior: 'smooth' });
+        setTimeout(()=> el.scrollIntoView({ behavior:'smooth', block:'start' }), 350);
       });
     });
   </script>
